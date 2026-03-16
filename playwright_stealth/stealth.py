@@ -7,9 +7,10 @@ import warnings
 from collections.abc import Callable
 from copy import deepcopy
 from pathlib import Path
-from typing import Dict, List, Union, Any, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from playwright import async_api, sync_api
+
 from playwright_stealth.case_insensitive_dict import CaseInsensitiveDict
 from playwright_stealth.context_managers import (
     AsyncWrappingContextManager,
@@ -487,6 +488,8 @@ class Stealth:
         greasy_chars = " ():-./;=?_"
         greasy_brand = f"Not{random.choice(greasy_chars)}A{random.choice(greasy_chars)}Brand"
         version = re.search(r"Chrome/(\d+)[\d.]+", user_agent, re.IGNORECASE)
+        if not version:
+            return None
         if len(version.groups()) == 0:
             return None
         major_version = version.group(1)
